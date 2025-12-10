@@ -82,7 +82,7 @@ Visita `https://www.tudominio.com` (o `https://www.tudominio.com/sistema_tickets
 
 ---
 
-## 🛠 Solución de problemas comunes
+## Solución de problemas comunes
 
 - **Error: "Error de conexión"**
 	- Verifica `config/database.php` y confirma host, nombre de BD, usuario y contraseña.
