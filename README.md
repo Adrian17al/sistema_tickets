@@ -97,7 +97,7 @@ Visita `https://www.tudominio.com` (o `https://www.tudominio.com/sistema_tickets
 
 ---
 
-## 📝 Notas técnicas
+## Notas técnicas
 
 - Arquitectura basada en **MVC** para facilitar mantenimiento y escalabilidad.
 - Prevención de colisiones: el sistema implementa bloqueo/asignación de tickets para evitar trabajo duplicado entre agentes.
