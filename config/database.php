@@ -3,7 +3,7 @@ class Database {
     private $host = "localhost";
     private $db_name = "soporte_tickets";
     private $username = "root";
-    private $password = ""; // Por defecto en XAMPP es vacío
+    private $password = ""; 
     public $conn;
 
     public function getConnection() {

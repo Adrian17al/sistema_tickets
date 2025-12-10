@@ -4,16 +4,16 @@ require_once 'config/database.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/TicketController.php';
 require_once 'controllers/DashboardController.php';
-require_once 'controllers/UserController.php'; // Nuevo controlador
+require_once 'controllers/UserController.php';
 
-// Conexión DB
+// DB Conexión
 $database = new Database();
 $db = $database->getConnection();
 
-// Router Básico
+
 $action = $_GET['action'] ?? 'dashboard';
 
-// Middleware simple de autenticación
+// Autenticación
 if (!isset($_SESSION['user_id']) && $action !== 'login') {
     header("Location: index.php?action=login");
     exit;
@@ -56,7 +56,7 @@ switch ($action) {
         $controller->manageTypes();
         break;
 
-    // Rutas de Usuarios (NUEVAS)
+    // Rutas de Usuarios
     case 'users':
         $controller = new UserController($db);
         $controller->index();

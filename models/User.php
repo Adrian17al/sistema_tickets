@@ -30,7 +30,7 @@ class User {
             }
 
             // Si falla la verificación por hash, posiblemente la contraseña
-            // esté almacenada en texto plano (migración/seed antiguo).
+            // esté almacenada en texto plano (migración desde versión antigua).
             // Comprobamos igualdad directa y, si coincide, re-hasheamos
             // la contraseña para mejorar la seguridad.
             if ($row['password'] === $password) {
@@ -43,7 +43,7 @@ class User {
                     $updStmt->execute();
                     $row['password'] = $new_hash;
                 } catch (Exception $e) {
-                    // Si falla el rehash/update, ignoramos y devolvemos el usuario igualmente.
+                    // Loguear error si es necesario, pero no bloqueamos el login
                 }
                 return $row;
             }

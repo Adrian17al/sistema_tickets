@@ -8,7 +8,7 @@ class UserController {
         $this->userModel = new User($db);
     }
 
-    // Listar usuarios
+    // Listar de usuarios
     public function index() {
         if ($_SESSION['role'] !== 'admin') die("Acceso denegado");
         
@@ -16,7 +16,7 @@ class UserController {
         require 'views/users/list.php';
     }
 
-    // Mostrar formulario y crear usuario
+    // Crear usuario
     public function create() {
         if ($_SESSION['role'] !== 'admin') die("Acceso denegado");
 

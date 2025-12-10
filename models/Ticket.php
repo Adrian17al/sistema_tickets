@@ -41,7 +41,7 @@ class Ticket {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Lógica de BLOQUEO: Asignar ticket a usuario (Race condition safe)
+    // Lógica de BLOQUEO: Asignar ticket a usuario
     public function assignToUser($ticket_id, $user_id) {
         // Solo asigna si assigned_to es NULL
         $query = "UPDATE " . $this->table_name . " 
@@ -53,7 +53,8 @@ class Ticket {
         $stmt->bindParam(":ticket_id", $ticket_id);
         $stmt->execute();
         
-        return $stmt->rowCount() > 0; // Retorna true si se actualizó (éxito), false si ya estaba tomado
+        return $stmt->rowCount() > 0; 
+        // Retorna true si se actualizó (éxito), false si ya estaba tomado
     }
 
     public function updateStatus($ticket_id, $status) {
@@ -67,7 +68,7 @@ class Ticket {
     public function getStats() {
         $stats = [];
         
-        // Total tickets
+        // Total de tickets
         $stmt = $this->conn->query("SELECT COUNT(*) as total FROM " . $this->table_name);
         $stats['total'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
