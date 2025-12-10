@@ -13,9 +13,10 @@
         <a href="index.php?action=dashboard" class="text-xl font-bold"><i class="fas fa-ticket-alt mr-2"></i>SupportDesk</a>
         <div>
             <?php if(isset($_SESSION['user_id'])): ?>
-                <span class="mr-4">Hola, <?php echo $_SESSION['username']; ?> (<?php echo $_SESSION['role']; ?>)</span>
+                <span class="mr-4 hidden md:inline">Hola, <?php echo $_SESSION['username']; ?> (<?php echo $_SESSION['role']; ?>)</span>
                 <a href="index.php?action=tickets" class="hover:underline mr-3">Tickets</a>
                 <?php if($_SESSION['role'] === 'admin'): ?>
+                    <a href="index.php?action=users" class="hover:underline mr-3">Usuarios</a>
                     <a href="index.php?action=types" class="hover:underline mr-3">Configuración</a>
                 <?php endif; ?>
                 <a href="index.php?action=logout" class="bg-red-500 hover:bg-red-700 px-3 py-1 rounded">Salir</a>

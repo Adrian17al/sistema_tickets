@@ -4,6 +4,7 @@ require_once 'config/database.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/TicketController.php';
 require_once 'controllers/DashboardController.php';
+require_once 'controllers/UserController.php'; // Nuevo controlador
 
 // Conexión DB
 $database = new Database();
@@ -32,6 +33,8 @@ switch ($action) {
         $controller = new DashboardController($db);
         $controller->index();
         break;
+    
+    // Rutas de Tickets
     case 'tickets':
         $controller = new TicketController($db);
         $controller->index();
@@ -52,6 +55,17 @@ switch ($action) {
         $controller = new TicketController($db);
         $controller->manageTypes();
         break;
+
+    // Rutas de Usuarios (NUEVAS)
+    case 'users':
+        $controller = new UserController($db);
+        $controller->index();
+        break;
+    case 'create_user':
+        $controller = new UserController($db);
+        $controller->create();
+        break;
+
     default:
         $controller = new DashboardController($db);
         $controller->index();
