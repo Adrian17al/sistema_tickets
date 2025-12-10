@@ -107,4 +107,4 @@ Visita `https://www.tudominio.com` (o `https://www.tudominio.com/sistema_tickets
 ## Siguientes pasos opcionales
 
 - Añadir un script para crear los usuarios por defecto en la base de datos.
-- Añadir instrucciones para desarrollo local (XAMPP) o un archivo `env.example` para gestionar credenciales.
+- Añadir instrucciones para desarrollo local (XAMPP) o un archivo `env.example` para gestionar credenciales. 

@@ -16,7 +16,7 @@
     <div class="container mx-auto flex justify-between items-center">
         <!-- Logo -->
         <a href="index.php?action=dashboard" class="text-xl font-bold flex items-center hover:text-blue-100 transition">
-            <i class="fas fa-ticket-alt mr-2"></i>SupportDesk
+            <i class="fas fa-ticket-alt mr-2"></i>HelpDesk
         </a>
 
         <!-- Botón Móvil -->
