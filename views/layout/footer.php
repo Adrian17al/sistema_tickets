@@ -4,6 +4,7 @@
         <p>&copy; <?php echo date('Y'); ?> Sistema de Tickets MVC.</p>
     </div>
 </footer>
+<!-- Custom JS -->
 <script src="assets/js/scripts.js"></script>
 </body>
 </html>

@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- SweetAlert2 (Para las alertas bonitas) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Custom CSS -->
     <link href="assets/css/styles.css" rel="stylesheet">
 </head>
@@ -16,7 +18,7 @@
     <div class="container mx-auto flex justify-between items-center">
         <!-- Logo -->
         <a href="index.php?action=dashboard" class="text-xl font-bold flex items-center hover:text-blue-100 transition">
-            <i class="fas fa-ticket-alt mr-2"></i>HelpDesk
+            <i class="fas fa-ticket-alt mr-2"></i>SupportDesk
         </a>
 
         <!-- Botón Móvil -->
@@ -45,7 +47,7 @@
                     </a>
                 <?php endif; ?>
                 
-                <a href="index.php?action=logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow btn-transition">
+                <a href="index.php?action=logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow btn-transition confirm-logout">
                     <i class="fas fa-sign-out-alt mr-2"></i> Salir
                 </a>
             <?php endif; ?>
@@ -62,11 +64,10 @@
                     <a href="index.php?action=users" class="block py-3 px-4 hover:bg-white/10 rounded font-medium"><i class="fas fa-users mr-2 w-6"></i> Usuarios</a>
                     <a href="index.php?action=types" class="block py-3 px-4 hover:bg-white/10 rounded font-medium"><i class="fas fa-cogs mr-2 w-6"></i> Configuración</a>
                 <?php endif; ?>
-                <a href="index.php?action=logout" class="block py-3 px-4 bg-red-500 rounded text-center mt-2 font-bold shadow">Cerrar Sesión</a>
+                <a href="index.php?action=logout" class="block py-3 px-4 bg-red-500 rounded text-center mt-2 font-bold shadow confirm-logout">Cerrar Sesión</a>
             </div>
         <?php endif; ?>
     </div>
 </nav>
-<!-- Ajuste padding móvil p-4 vs md:p-6 -->
 <div class="container mx-auto p-4 md:p-6 flex-grow animate-fade-in">
 

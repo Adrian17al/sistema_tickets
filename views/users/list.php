@@ -6,11 +6,32 @@
     </a>
 </div>
 
-<!-- Mensajes -->
+<?php if(isset($_GET['msg']) && $_GET['msg'] == 'updated'): ?>
+    <script>
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Actualizado!',
+                text: 'El estado del usuario ha sido modificado correctamente.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+    </script>
+<?php endif; ?>
+
 <?php if(isset($_GET['error']) && $_GET['error'] == 'self_suspend'): ?>
-    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded">
-        No puedes suspender tu propia cuenta.
-    </div>
+    <script>
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Acción Denegada',
+                text: 'No puedes suspender tu propia cuenta.',
+            });
+        } else {
+            alert("No puedes suspender tu propia cuenta.");
+        }
+    </script>
 <?php endif; ?>
 
 <div class="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-100">
@@ -48,13 +69,22 @@
                     <?php if($user['id'] != $_SESSION['user_id']): ?>
                         <?php if($user['is_suspended']): ?>
                             <a href="index.php?action=suspend_user&id=<?php echo $user['id']; ?>" 
-                               class="text-green-600 hover:text-green-900 font-semibold text-xs border border-green-200 bg-green-50 px-3 py-1 rounded hover:bg-green-100 transition">
+                               class="confirm-action text-green-600 hover:text-green-900 font-semibold text-xs border border-green-200 bg-green-50 px-3 py-1 rounded hover:bg-green-100 transition"
+                               data-title="¿Reactivar Usuario?"
+                               data-text="El usuario podrá volver a ingresar al sistema."
+                               data-icon="question"
+                               data-btn-text="Sí, reactivar"
+                               data-btn-color="#10b981">
                                Reactivar
                             </a>
                         <?php else: ?>
                             <a href="index.php?action=suspend_user&id=<?php echo $user['id']; ?>" 
-                               onclick="return confirm('¿Estás seguro de suspender a este usuario? No podrá acceder al sistema.');"
-                               class="text-red-600 hover:text-red-900 font-semibold text-xs border border-red-200 bg-red-50 px-3 py-1 rounded hover:bg-red-100 transition">
+                               class="confirm-action text-red-600 hover:text-red-900 font-semibold text-xs border border-red-200 bg-red-50 px-3 py-1 rounded hover:bg-red-100 transition"
+                               data-title="¿Suspender Usuario?"
+                               data-text="El usuario perderá el acceso al sistema inmediatamente."
+                               data-icon="warning"
+                               data-btn-text="Sí, suspender"
+                               data-btn-color="#ef4444">
                                Suspender
                             </a>
                         <?php endif; ?>

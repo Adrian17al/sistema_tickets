@@ -25,10 +25,7 @@ class User {
         
         if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             if(password_verify($password, $row['password'])) {
-                // Validación estricta de suspensión
-                if($row['is_suspended'] == 1) {
-                    return 'suspended';
-                }
+                if($row['is_suspended'] == 1) return 'suspended';
                 return $row;
             }
         }
@@ -36,21 +33,17 @@ class User {
     }
 
     public function getAll() {
-        // Aseguramos que traiga is_suspended
         $query = "SELECT id, username, role, is_suspended, created_at FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // CORRECCIÓN PRINCIPAL:
-    // Hacemos el cambio (toggle) directamente en SQL para evitar errores de lógica en PHP
+    // Toggle directo en SQL (Más robusto)
     public function toggleSuspension($user_id) {
-        // Si es 1 lo pone en 0, si es 0 (o NULL) lo pone en 1.
         $query = "UPDATE " . $this->table_name . " 
                   SET is_suspended = CASE WHEN is_suspended = 1 THEN 0 ELSE 1 END 
                   WHERE id = :id";
-        
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $user_id);
         return $stmt->execute();
