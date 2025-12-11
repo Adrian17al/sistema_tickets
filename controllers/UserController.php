@@ -8,15 +8,12 @@ class UserController {
         $this->userModel = new User($db);
     }
 
-    // Listar de usuarios
     public function index() {
         if ($_SESSION['role'] !== 'admin') die("Acceso denegado");
-        
         $users = $this->userModel->getAll();
         require 'views/users/list.php';
     }
 
-    // Crear usuario
     public function create() {
         if ($_SESSION['role'] !== 'admin') die("Acceso denegado");
 
@@ -25,7 +22,6 @@ class UserController {
             $password = $_POST['password'];
             $role = $_POST['role'];
 
-            // Validación básica
             if (empty($username) || empty($password)) {
                 $error = "Todos los campos son obligatorios";
                 require 'views/users/create.php';
@@ -36,7 +32,7 @@ class UserController {
                 if ($this->userModel->register($username, $password, $role)) {
                     header("Location: index.php?action=users&msg=created");
                 } else {
-                    $error = "Error al crear usuario (quizás el nombre ya existe)";
+                    $error = "Error al crear usuario";
                     require 'views/users/create.php';
                 }
             } catch (Exception $e) {
@@ -45,6 +41,22 @@ class UserController {
             }
         } else {
             require 'views/users/create.php';
+        }
+    }
+
+    // Suspender o reactivar usuario
+    public function toggleSuspend() {
+        if ($_SESSION['role'] !== 'admin') die("Acceso denegado");
+        
+        if (isset($_GET['id'])) {
+            // Evitar que el admin se suspenda a sí mismo
+            if ($_GET['id'] == $_SESSION['user_id']) {
+                header("Location: index.php?action=users&error=self_suspend");
+                exit;
+            }
+            
+            $this->userModel->toggleSuspension($_GET['id']);
+            header("Location: index.php?action=users&msg=updated");
         }
     }
 }

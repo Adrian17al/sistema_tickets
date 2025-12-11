@@ -10,11 +10,15 @@ class AuthController {
 
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user = $this->userModel->login($_POST['username'], $_POST['password']);
-            if ($user) {
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['role'] = $user['role'];
+            $result = $this->userModel->login($_POST['username'], $_POST['password']);
+            
+            if ($result === 'suspended') {
+                $error = "Tu cuenta ha sido suspendida. Contacta al administrador.";
+                require 'views/login.php';
+            } elseif ($result && is_array($result)) {
+                $_SESSION['user_id'] = $result['id'];
+                $_SESSION['username'] = $result['username'];
+                $_SESSION['role'] = $result['role'];
                 header("Location: index.php?action=dashboard");
                 exit;
             } else {
@@ -29,16 +33,6 @@ class AuthController {
     public function logout() {
         session_destroy();
         header("Location: index.php");
-    }
-    
-    public function register() {
-         if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-             die("Acceso denegado");
-         }
-         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-             $this->userModel->register($_POST['username'], $_POST['password'], $_POST['role']);
-             header("Location: index.php?action=users");
-         }
     }
 }
 ?>

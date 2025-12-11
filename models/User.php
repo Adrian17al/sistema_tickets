@@ -8,7 +8,7 @@ class User {
     }
 
     public function register($username, $password, $role = 'user') {
-        $query = "INSERT INTO " . $this->table_name . " (username, password, role) VALUES (:username, :password, :role)";
+        $query = "INSERT INTO " . $this->table_name . " (username, password, role, is_suspended) VALUES (:username, :password, :role, 0)";
         $stmt = $this->conn->prepare($query);
         $password_hash = password_hash($password, PASSWORD_BCRYPT);
         $stmt->bindParam(":username", $username);
@@ -18,32 +18,16 @@ class User {
     }
 
     public function login($username, $password) {
-        $query = "SELECT id, username, password, role FROM " . $this->table_name . " WHERE username = :username LIMIT 1";
+        $query = "SELECT id, username, password, role, is_suspended FROM " . $this->table_name . " WHERE username = :username LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":username", $username);
         $stmt->execute();
         
         if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            // Primero intentamos verificar usando hashes (bcrypt/argon2, etc.)
-            if (password_verify($password, $row['password'])) {
-                return $row;
-            }
-
-            // Si falla la verificación por hash, posiblemente la contraseña
-            // esté almacenada en texto plano (migración desde versión antigua).
-            // Comprobamos igualdad directa y, si coincide, re-hasheamos
-            // la contraseña para mejorar la seguridad.
-            if ($row['password'] === $password) {
-                $new_hash = password_hash($password, PASSWORD_BCRYPT);
-                $update = "UPDATE " . $this->table_name . " SET password = :password WHERE id = :id";
-                $updStmt = $this->conn->prepare($update);
-                $updStmt->bindParam(':password', $new_hash);
-                $updStmt->bindParam(':id', $row['id']);
-                try {
-                    $updStmt->execute();
-                    $row['password'] = $new_hash;
-                } catch (Exception $e) {
-                    // Loguear error si es necesario, pero no bloqueamos el login
+            if(password_verify($password, $row['password'])) {
+                // Validación estricta de suspensión
+                if($row['is_suspended'] == 1) {
+                    return 'suspended';
                 }
                 return $row;
             }
@@ -52,10 +36,24 @@ class User {
     }
 
     public function getAll() {
-        $query = "SELECT id, username, role FROM " . $this->table_name;
+        // Aseguramos que traiga is_suspended
+        $query = "SELECT id, username, role, is_suspended, created_at FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // CORRECCIÓN PRINCIPAL:
+    // Hacemos el cambio (toggle) directamente en SQL para evitar errores de lógica en PHP
+    public function toggleSuspension($user_id) {
+        // Si es 1 lo pone en 0, si es 0 (o NULL) lo pone en 1.
+        $query = "UPDATE " . $this->table_name . " 
+                  SET is_suspended = CASE WHEN is_suspended = 1 THEN 0 ELSE 1 END 
+                  WHERE id = :id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $user_id);
+        return $stmt->execute();
     }
 }
 ?>

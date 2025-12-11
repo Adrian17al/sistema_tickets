@@ -6,69 +6,60 @@ require_once 'controllers/TicketController.php';
 require_once 'controllers/DashboardController.php';
 require_once 'controllers/UserController.php';
 
-// DB Conexión
 $database = new Database();
 $db = $database->getConnection();
 
-
 $action = $_GET['action'] ?? 'dashboard';
 
-// Autenticación
+// Middleware simple
 if (!isset($_SESSION['user_id']) && $action !== 'login') {
     header("Location: index.php?action=login");
     exit;
 }
 
-// Dispatcher
 switch ($action) {
     case 'login':
-        $controller = new AuthController($db);
-        $controller->login();
+        (new AuthController($db))->login();
         break;
     case 'logout':
-        $controller = new AuthController($db);
-        $controller->logout();
-        break;
-    case 'dashboard':
-        $controller = new DashboardController($db);
-        $controller->index();
+        (new AuthController($db))->logout();
         break;
     
-    // Rutas de Tickets
+    // Dashboard
+    case 'dashboard':
+        (new DashboardController($db))->index();
+        break;
+    
+    // Tickets
     case 'tickets':
-        $controller = new TicketController($db);
-        $controller->index();
+        (new TicketController($db))->index();
         break;
     case 'create_ticket':
-        $controller = new TicketController($db);
-        $controller->create();
+        (new TicketController($db))->create();
         break;
     case 'take_ticket':
-        $controller = new TicketController($db);
-        $controller->assign();
+        (new TicketController($db))->assign();
         break;
     case 'complete_ticket':
-        $controller = new TicketController($db);
-        $controller->complete();
+        (new TicketController($db))->complete();
         break;
     case 'types':
-        $controller = new TicketController($db);
-        $controller->manageTypes();
+        (new TicketController($db))->manageTypes();
         break;
 
-    // Rutas de Usuarios
+    // Usuarios
     case 'users':
-        $controller = new UserController($db);
-        $controller->index();
+        (new UserController($db))->index();
         break;
     case 'create_user':
-        $controller = new UserController($db);
-        $controller->create();
+        (new UserController($db))->create();
+        break;
+    case 'suspend_user': // NUEVA RUTA
+        (new UserController($db))->toggleSuspend();
         break;
 
     default:
-        $controller = new DashboardController($db);
-        $controller->index();
+        (new DashboardController($db))->index();
         break;
 }
 ?>
