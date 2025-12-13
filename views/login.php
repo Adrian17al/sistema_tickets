@@ -13,9 +13,5 @@
         </div>
         <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Entrar</button>
     </form>
-    <div class="mt-4 text-sm text-gray-600 text-center">
-        <p>Admin: admin / admin123</p>
-        <p>Usuario: usuario1 / admin123</p>
-    </div>
 </div>
 <?php include 'views/layout/footer.php'; ?>
