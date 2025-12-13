@@ -27,6 +27,12 @@ Sigue estos pasos para desplegar el sistema en un hosting compartido (cPanel, Pl
 2. Crea un usuario de base de datos y asigna TODOS los privilegios a la base creada.
 3. Abre `phpMyAdmin` y, dentro de la base, importa `database.sql` incluido en este proyecto.
 
+> Nota: El archivo `database.sql` se encuentra en la raíz del repositorio y contiene la estructura y datos iniciales (seeders) — usuarios por defecto y tipos de tickets. Si tu esquema actual no incluye la columna `is_suspended` para controlar suspensiones de cuenta, agrégala con:
+
+```sql
+ALTER TABLE users ADD COLUMN is_suspended TINYINT(1) DEFAULT 0;
+```
+
 ### 4. Conexión del sistema
 
 En el servidor, edita `config/database.php` y actualiza las variables con las credenciales reales:
@@ -64,7 +70,11 @@ Visita `https://www.tudominio.com` (o `https://www.tudominio.com/sistema_tickets
 ### 3. Funcionalidades clave
 
 - **Dashboard administrativo:** métricas en tiempo real (total histórico de tickets, pendientes, resueltos y accesos rápidos).
-- **Gestión de usuarios (solo admin):** crear/editar/eliminar usuarios y asignar roles.
+- **Gestión de usuarios (solo admin):** crear/editar/eliminar usuarios, suspender/reactivar y asignar roles.
+
+	- **Suspender / Reactivar usuario**: en la lista de usuarios verás los botones **Suspender**/**Reactivar**. Llaman a la ruta `index.php?action=suspend_user&id={ID}`. La acción está implementada en `UserController::toggleSuspend()` y alterna el campo `is_suspended` en la BD; un administrador no puede suspenderse a sí mismo. Un usuario suspendido no podrá iniciar sesión y verá el mensaje "Tu cuenta ha sido suspendida. Contacta al administrador.".
+
+	- **Eliminar usuario**: en la lista de usuarios verás el botón **Eliminar** que apunta a `index.php?action=delete_user&id={ID}`. El modelo contiene `User::delete($id)` que elimina el registro de la base. La eliminación es irreversible y requiere confirmación y permisos administrativos. Si la ruta `delete_user` no está habilitada en `index.php` o falta un método en `UserController`, debes añadir `UserController::delete()` y un `case 'delete_user'` en `index.php` para activar la funcionalidad desde la UI.
 - **Configuración de tipos (solo admin):** definir categorías (ej.: Redes, Hardware, Software) que alimentan el formulario de creación de tickets.
 
 > Seguridad: las contraseñas se almacenan con `password_hash()` (bcrypt). No es posible recuperar contraseñas, solo resetearlas.
