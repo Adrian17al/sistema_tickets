@@ -7,23 +7,12 @@ body {
 }
 
 /* Scrollbar personalizado */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
 /* --- ANIMACIONES --- */
-
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -33,20 +22,11 @@ body {
     animation: fadeIn 0.4s ease-out forwards;
 }
 
-/* Efecto cascada para tablas y tarjetas */
-tbody tr, .mobile-card {
-    opacity: 0;
-    animation: fadeIn 0.3s ease-out forwards;
-}
-/* Retrasos progresivos */
-tbody tr:nth-child(1), .mobile-card:nth-child(1) { animation-delay: 0.05s; }
-tbody tr:nth-child(2), .mobile-card:nth-child(2) { animation-delay: 0.1s; }
-tbody tr:nth-child(3), .mobile-card:nth-child(3) { animation-delay: 0.15s; }
-tbody tr:nth-child(4), .mobile-card:nth-child(4) { animation-delay: 0.2s; }
-tbody tr:nth-child(5), .mobile-card:nth-child(5) { animation-delay: 0.25s; }
+/* CORRECCIÓN: Eliminamos la regla que ocultaba las filas por defecto.
+   Ahora son visibles siempre, y la animación es un 'plus' si carga bien.
+*/
 
 /* --- COMPONENTES --- */
-
 .card-hover {
     transition: all 0.3s ease;
     border: 1px solid rgba(0,0,0,0.05);
