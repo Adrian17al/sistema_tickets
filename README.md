@@ -1,4 +1,4 @@
-# Sistema de Gestión de Tickets de Soporte
+# Sistema de Gestión de Tickets de Soporte OctoFix
 
 Este es un sistema de tickets ligero, rápido y escalable desarrollado en PHP nativo siguiendo la arquitectura MVC (Modelo - Vista - Controlador). Está pensado para gestionar incidencias de soporte técnico con prevención de colisiones (bloqueo de tickets) en entornos con varios agentes trabajando simultáneamente.
 
