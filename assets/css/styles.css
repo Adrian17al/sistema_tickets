@@ -4,13 +4,62 @@
 body {
     font-family: 'Inter', sans-serif;
     background-color: #F8FAFC; /* Slate 50 - Fondo limpio */
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* Scrollbar personalizado con los colores del logo */
+/* Scrollbar personalizado */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
-::-webkit-scrollbar-thumb { background: #67E8F9; border-radius: 4px; } /* Cian claro */
-::-webkit-scrollbar-thumb:hover { background: #06B6D4; } /* Cian marca */
+::-webkit-scrollbar-thumb { background: #67E8F9; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #06B6D4; }
+
+/* MODO OSCURO: Scrollbar */
+.dark ::-webkit-scrollbar-track { background: #0F172A; }
+.dark ::-webkit-scrollbar-thumb { background: #0891B2; }
+
+/* --- MODO OSCURO (Overrides Globales) --- */
+/* Esta técnica adapta componentes existentes (bg-white, text-gray) sin editar cada archivo HTML */
+
+.dark body {
+    background-color: #0F172A; /* Slate 900 - Fondo principal oscuro */
+    color: #F1F5F9; /* Slate 100 - Texto claro */
+}
+
+/* Adaptar contenedores blancos (Tarjetas, Tablas, Modales) */
+.dark .bg-white {
+    background-color: #1E293B !important; /* Slate 800 */
+    color: #F1F5F9 !important;
+    border-color: #334155 !important; /* Slate 700 */
+}
+
+/* Adaptar fondos grises claros (Headers de tablas, fondos alternos) */
+.dark .bg-gray-50, .dark .bg-gray-100, .dark .hover\:bg-gray-50:hover, .dark .hover\:bg-gray-100:hover {
+    background-color: #0F172A !important; /* Slate 900 */
+    color: #CBD5E1 !important;
+}
+
+/* Adaptar textos oscuros a claros */
+.dark .text-gray-800, .dark .text-gray-700, .dark .text-gray-600 {
+    color: #E2E8F0 !important; /* Slate 200 */
+}
+.dark .text-gray-500, .dark .text-gray-400 {
+    color: #94A3B8 !important; /* Slate 400 */
+}
+
+/* Adaptar Formularios (Inputs, Selects) */
+.dark input, .dark select, .dark textarea {
+    background-color: #334155 !important; /* Slate 700 */
+    color: #F1F5F9 !important;
+    border-color: #475569 !important;
+}
+.dark input::placeholder {
+    color: #94A3B8 !important;
+}
+
+/* Adaptar Bordes */
+.dark .border-gray-100, .dark .border-gray-200 {
+    border-color: #334155 !important;
+}
 
 /* --- ANIMACIONES --- */
 @keyframes fadeIn {
@@ -25,16 +74,15 @@ body {
 /* --- COMPONENTES --- */
 .card-hover {
     transition: all 0.3s ease;
-    border: 1px solid rgba(6, 182, 212, 0.15); /* Borde cian sutil */
+    border: 1px solid rgba(6, 182, 212, 0.15);
 }
 .card-hover:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.1);
 }
 
-/* BRANDING: OctoFix Gradient (Basado en el Logo) */
+/* BRANDING: OctoFix Gradient */
 .nav-gradient {
-    /* De Azul Turquesa (Octopus) a Azul Medianoche (Fondo) */
     background: linear-gradient(135deg, #06B6D4 0%, #0F172A 100%);
 }
 
@@ -45,6 +93,5 @@ body {
     transform: scale(0.95);
 }
 
-/* Clases de utilidad extra para la marca */
 .text-brand-orange { color: #EA580C; }
 .bg-brand-orange { background-color: #EA580C; }
